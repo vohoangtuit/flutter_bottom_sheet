@@ -1,33 +1,36 @@
-
 import 'package:bottom_sheet/model/user.dart';
 import 'package:flutter/material.dart';
 
-class Demo2 extends StatefulWidget {
+class Demo3 extends StatefulWidget {
   ValueChanged data;
-  Demo2({this.data});
+  Demo3({this.data});
   @override
-  _Demo2State createState() => _Demo2State();
+  _Demo3State createState() => _Demo3State();
 }
 
-class _Demo2State extends State<Demo2> {
+class _Demo3State extends State<Demo3> {
   List<User> list = List<User>();
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        SizedBox(height: 2,),
-        Text('select user',style: TextStyle(color: Colors.red,fontSize: 14),),
-        ListView.builder(
-            shrinkWrap: true,
-                    itemCount:list.length ,
-          itemBuilder: (context, index){
-              return CustomListTitle(list[index],(){
-                setState(() {
-                  widget.data(list[index]);
+    return  DraggableScrollableSheet(
+      expand: false,
+//      initialChildSize: 0.3,
+//      minChildSize: 0.1,
+//      maxChildSize: 0.8,
+      builder: (_, controller) {
+        return Container(
+          color: Colors.black12,
+          child: ListView.builder(
+
+              shrinkWrap: true,
+              itemCount:list.length ,
+              itemBuilder: (context, index){
+                return CustomListTitle(list[index],(){
+                  setState(() {
+                    widget.data(list[index]);
+                  });
+                  Navigator.pop(context);
                 });
-                _onBack(context);
-              });
 //            return ListTile(
 //              title: Text(list[index].name),
 //              onTap: (){
@@ -38,34 +41,31 @@ class _Demo2State extends State<Demo2> {
 //              },
 //            );
 
-          }
+              }
           ),
-      ],
-
+        );
+      },
     );
+  }
+  _intiList(){
+    List<User> users = List<User>();
+    users.add(User('Tu', 'tu@gmail.com', '098891928'));
+    users.add(User('Van A', 'vana@gmail.com', '0735457776'));
+    users.add(User('Tôm nguyen', 'tomnguyen@gmail.com', '113232323'));
+    users.add(User('Tôm nguyen', 'tomnguyen@gmail.com', '113232323'));
+//    users.add(User('Tôm nguyen', 'tomnguyen@gmail.com', '113232323'));
+//    users.add(User('Tôm nguyen', 'tomnguyen@gmail.com', '113232323'));
+//    users.add(User('Tôm nguyen', 'tomnguyen@gmail.com', '113232323'));
+//    users.add(User('Tôm nguyen', 'tomnguyen@gmail.com', '113232323'));
+
+    setState(() {
+      list =users;
+    });
   }
   @override
   void initState() {
     super.initState();
-    initList();
-  }
-  initList(){
-  setState(() {
-    list =  _addData();
-    print("list 1${list.length}");
-  });
-
-  }
-
-  List<User>_addData(){
-     List<User> users = List<User>();
-     users.add(User('Tu', 'tu@gmail.com', '098891928'));
-    users.add(User('Van A', 'vana@gmail.com', '0735457776'));
-    users.add(User('Tôm nguyen', 'tomnguyen@gmail.com', '113232323'));
-    return users;
-  }
-  _onBack(BuildContext context){
-    Navigator.pop(context);
+    _intiList();
   }
 }
 class CustomListTitle extends StatelessWidget{
